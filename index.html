@@ -69,50 +69,93 @@
 
     <!-- main -->
 
-    <main class="container  main-bg-color   rounded mt-5 ">
+    <main class="container  main-bg-color rounded mt-5 ">
 
-        <h1 class="main-Heading text-center " style="color:rgb(241, 150, 3)">WELCOME OT PICTURES <span
-                class="main-heading-highlight">{WORLD}</span></h1>
 
-        <!-- search-section -->
+        <section id="img-section">
 
-        <section class="search-section">
 
-            <form class=" mt-4 d-flex justify-content-center ">
+            <h1 class="main-Heading text-center " style="color:rgb(241, 150, 3)">WELCOME OT PICTURES <span
+                    class="main-heading-highlight">WORLD</span></h1>
 
-                <input id="input-box" class="form-control me-2 w-50" type="search" placeholder="Search"
-                    aria-label="Search">
+            <!-- search-section -->
 
-                <button id="search-btn" onclick="showDetails()" class="btn btn-outline-success"
-                    type="submit">Search</button>
+            <section class="search-section">
 
-            </form>
+                <form class=" mt-4 d-flex justify-content-center ">
+
+                    <input id="input-box" class="form-control me-2 w-50" type="search" placeholder="Search"
+                        aria-label="Search">
+
+                    <button id="search-btn" onclick="showDetails()" class="btn btn-outline-success"
+                        type="submit">Search</button>
+
+                </form>
+
+            </section>
+
+            <!-- Error-message-section -->
+
+            <section class="error-message-section mt-5 " id="Error-section-parent">
+
+            </section>
+
+            <!-- spinner-section -->
+
+            <section class="spinner-section mt-5">
+
+                <div id="spinner" class="loader ">Loading...</div>
+
+            </section>
+
+            <!-- show-img section -->
+
+            <section class="show-img-section" id="section">
+
+
+
+                <div id="slider-input-form">
+
+
+
+                    <form class=" mt-4 d-flex justify-content-evenly">
+
+
+
+                        <h4>Select Picture For Slider</h4>
+
+                        <input id="slider-input-box" class="form-control  ms-5 me-2 w-25 text-center" type="search"
+                            placeholder="Slide Change Duration" aria-label="Search">
+
+                        <button id="create-slider-btn" class="btn btn-danger" type="submit">Create Slider</button>
+
+                    </form>
+
+
+                </div>
+
+
+
+                <div class="row row-cols-1 row-cols-md-3 g-4 m-5" id="show-img-section-parent">
+
+
+                </div>
+
+            </section>
+
+
 
         </section>
 
-        <!-- Error-message-section -->
+        <!-- slider Section -->
 
-        <section class="error-message-section mt-5 " id="Error-section-parent">
+        <section class="slider-section">
 
-        </section>
+            <div id="slider-expand">
 
-        <!-- spinner-section -->
-
-        <section class="spinner-section mt-5">
-
-            <div id="spinner" class="loader ">Loading...</div>
+            </div>
 
         </section>
-
-        <!-- show-img section -->
-
-        <section class="show-img-section" id="section">
-
-            <div class="row row-cols-1 row-cols-md-3 g-4 m-5" id="show-img-section-parent"></div>
-
-        </section>
-
-
 
 
 

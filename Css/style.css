@@ -156,3 +156,27 @@ main{
     height: 5em;
   }
 }
+
+
+/* select css  */
+
+.selected{
+
+  border: 4px solid rgb(26, 23, 23);
+
+}
+
+/* //slide-css */
+
+#slider-input-form{
+
+  display:none;
+  visibility: none;
+
+}
+.slider-item img{
+
+   width: 100%;
+   height: 35em;
+
+}

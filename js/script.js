@@ -1,3 +1,10 @@
+//Array for Storing slider image 
+
+let slider = [];
+
+let slideIndex = 0;
+
+
 // get element
 
 const getElement = (id) => {
@@ -100,6 +107,10 @@ const showDetails = () => {
 
     // spinnerParent.textContent = "";
 
+    const sliderInputForm =getElement("slider-input-form");
+
+     sliderInputForm.style.display = "block"
+
     showSpinner("spinner", "block");
 
     const showImgParent = getElement("show-img-section-parent");
@@ -137,26 +148,27 @@ const showDetails = () => {
 
 //show picture
 
+//important note  onclick=selectItem(event,"${element.webformatURL}")
+
 const displayPicture = (data) => {
   data.forEach((element) => {
-
-    console.log(element);
 
     const Div = document.createElement("div");
     Div.setAttribute("class", "col ");
     Div.innerHTML = `
       
-      <div class="card h-100">
+      <div class="card h-100" onclick=selectItem(event,"${element.largeImageURL}")> 
       <img src="${element.webformatURL}" class="card-img-top img-fluid h-100" alt="...">
       <div class="card-body">
-        <h5 class="card-title text-center text-info fw-bolder">${element.tags.toUpperCase()}</h5>
+        <h5 class="card-title text-center text-dark fw-light">${element.tags.toUpperCase()}</h5>
         <p class="card-text"></p>
       </div>
       <div class="card-footer d-flex justify-content-between">  
            
           <div class="d-flex ">
-            <li class="ms-0"><i class="fa-solid fa-house text-dark"></i></li>
-            <li class="ms-5"><i class="fa-solid fa-heart text-danger"></i></li>
+
+          <li class="ms-0"><i class="fa-solid fa-heart "></i></li>
+            <li class="ms-5"><i class="fa-solid fa-comment"></i></li>           
           </div>
             <li ><i class="fa-solid fa-eye-slash text-dark"></i></li>
             
@@ -169,3 +181,113 @@ const displayPicture = (data) => {
     parent.appendChild(Div);
   });
 };
+
+
+const selectItem =(event,img)=>{
+
+    const element = event.target.parentNode;
+
+    element.setAttribute("class","selected");
+
+    const imgForSlider = img;
+
+    const item = slider.indexOf(img);
+
+    if (item === -1) {
+
+      slider.push(img);
+      
+    }
+    else{
+
+      alert("This picture Already Added")
+
+    }
+
+
+}
+
+const createSliderButton = getElement("create-slider-btn");
+
+createSliderButton.addEventListener("click",(event)=>{
+
+   event.preventDefault();
+
+   createSlider()
+
+})
+
+const createSlider =() =>{
+
+   const duration = document.getElementById("slider-input-box").value ||1000;
+
+   if (duration<1000) {
+
+    alert ('Please Put a positive value')
+
+    return
+    
+   }
+
+   const MainElement =document.getElementById("img-section");
+
+   MainElement.style.display ="none"
+
+    const sliderParent =getElement("slider-expand");
+
+    sliderParent.textContent = '';
+
+    slider.forEach(element => {
+
+      const div =document.createElement("div");
+    
+      div.setAttribute("class","slider-item")
+
+      div.innerHTML =`
+
+      <img src="${element}" class="img-thumbnail" alt="...">
+
+      `
+      sliderParent.appendChild(div)
+
+      
+    });
+
+   changeSlide(0)
+    
+   const timer = setInterval(() => {
+
+       slideIndex++;
+
+       changeSlide(slideIndex)
+
+      
+    },duration);
+
+}
+
+
+const changeSlide =(index)=>{
+
+     
+
+    const itemsNode = document.querySelectorAll(".slider-item");
+
+    if (index>=itemsNode.length) {
+
+        slideIndex = 0;
+
+        index =0;
+      
+    }
+    
+    
+    itemsNode.forEach(item =>{
+
+       item.style.display = 'none';
+
+    })
+
+    itemsNode[index].style.display = "block"
+
+}
