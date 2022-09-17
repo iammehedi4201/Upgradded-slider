@@ -1,8 +1,14 @@
-//Array for Storing slider image 
+//Array for Storing slider image
 
-let slider = [];
+let container = [];
+
+const slider = [];
+
+const likedPostsArray = [];
 
 let slideIndex = 0;
+
+let reportedPost =[]
 
 
 // get element
@@ -20,6 +26,22 @@ const getValue = (id) => {
 
   return value;
 };
+
+//press Enter keyword Button  for search
+
+const searchBtn = document.getElementById("search-btn");
+const inputValue = document.getElementById("input-box");
+
+inputValue.addEventListener("keypress", (event)=>{
+
+    if (event.key == 'enter'){
+
+       showDetails();
+
+    }
+
+});
+
 
 // spinner Toggler
 
@@ -62,8 +84,6 @@ const showDetails = () => {
 
   const value = getValue("input-box");
 
-  console.log("The value is:",value);
-
   const inputElement = getElement("input-box");
 
   inputElement.value = "";
@@ -71,6 +91,10 @@ const showDetails = () => {
   if (value == "") {
 
     showSpinner("spinner", "block");
+
+    const sliderInputForm =getElement("slider-input-form");
+
+     sliderInputForm.style.display = "none"
 
     const showImgParent = getElement("show-img-section-parent");
 
@@ -109,15 +133,11 @@ const showDetails = () => {
 
     const sliderInputForm =getElement("slider-input-form");
 
-     sliderInputForm.style.display = "block"
+    sliderInputForm.style.display = "block"
 
-    showSpinner("spinner", "block");
-
-    const showImgParent = getElement("show-img-section-parent");
+    showSpinner("spinner", "block");    
 
     document.getElementById("section").style.display = "none";
-
-    showImgParent.textContent=''
 
     const ErrorSectionParent = getElement("Error-section-parent");
 
@@ -127,15 +147,14 @@ const showDetails = () => {
 
     const key = "29904037-6defd6b3ede3a43969408b236";
 
-    console.log(value);
-
     const url = `https://pixabay.com/api/?key=${key}&q=${value}&image_type=photo&pretty=true`;
 
     fetch(url)
       .then((Response) => Response.json())
-      .then((data) => displayPicture(data.hits))
+      .then((data) =>displayPicture(data.hits))
       .catch((error) => console.log(error));
 
+       
       setTimeout(() => {
 
         showSpinner("spinner", "none");
@@ -151,13 +170,20 @@ const showDetails = () => {
 //important note  onclick=selectItem(event,"${element.webformatURL}")
 
 const displayPicture = (data) => {
+
+  const showImgParent = getElement("show-img-section-parent");
+
+  showImgParent.textContent=''
+
+   container = [...data];
+
   data.forEach((element) => {
 
     const Div = document.createElement("div");
     Div.setAttribute("class", "col ");
     Div.innerHTML = `
       
-      <div class="card h-100" onclick=selectItem(event,"${element.largeImageURL}")> 
+      <div class="card h-100"> 
       <img src="${element.webformatURL}" class="card-img-top img-fluid h-100" alt="...">
       <div class="card-body">
         <h5 class="card-title text-center text-dark fw-light">${element.tags.toUpperCase()}</h5>
@@ -167,11 +193,23 @@ const displayPicture = (data) => {
            
           <div class="d-flex ">
 
-          <li class="ms-0"><i class="fa-solid fa-heart "></i></li>
-            <li class="ms-5"><i class="fa-solid fa-comment"></i></li>           
+          <li onclick = addToLike(event,"${element.id}") class="ms-0 cursor-style">
+          <i class="fa-solid fa-heart"></i>
+          </li>
+
+            <li class="ms-5 text-lighter  cursor-style"><i class="fa-solid fa-comment"></i> ${element.comments}</li> 
+
           </div>
-            <li ><i class="fa-solid fa-eye-slash text-dark"></i></li>
+            <li onclick =reportImage("${element.id}") class=" cursor-style" ><i class="fa-solid fa-eye-slash text-dark"></i></li>
             
+      </div>
+
+      <div class="card-footer">  
+           
+          <div class="d-grid gap-2" >
+          <button onclick=selectItem(event,"${element.largeImageURL}") class="btn btn-primary" type="button">Select Image</button> 
+          </div>
+                
       </div>
 
       `;
@@ -182,14 +220,21 @@ const displayPicture = (data) => {
   });
 };
 
+// ${
+//   isLIked(element.id) && 'text-danger'
+// }"
 
 const selectItem =(event,img)=>{
 
-    const element = event.target.parentNode;
+    const element = event.target;
 
     element.setAttribute("class","selected");
 
+    element.innerHTML ="Selected"
+
     const imgForSlider = img;
+
+    console.log(img);
 
     const item = slider.indexOf(img);
 
@@ -213,11 +258,19 @@ createSliderButton.addEventListener("click",(event)=>{
 
    event.preventDefault();
 
-   createSlider()
+   createSlider();
+
+   const MainElement =document.getElementById("img-section");
+
+   MainElement.style.display ="none"
 
 })
 
 const createSlider =() =>{
+
+  const sliderParent =getElement("slider-expand");
+
+  sliderParent.textContent = '';
 
    const duration = document.getElementById("slider-input-box").value ||1000;
 
@@ -228,15 +281,6 @@ const createSlider =() =>{
     return
     
    }
-
-   const MainElement =document.getElementById("img-section");
-
-   MainElement.style.display ="none"
-
-    const sliderParent =getElement("slider-expand");
-
-    sliderParent.textContent = '';
-
     slider.forEach(element => {
 
       const div =document.createElement("div");
@@ -252,6 +296,7 @@ const createSlider =() =>{
 
       
     });
+
 
    changeSlide(0)
     
@@ -291,3 +336,56 @@ const changeSlide =(index)=>{
     itemsNode[index].style.display = "block"
 
 }
+
+// const isLIked = (id) => {
+
+
+
+//    console.log(likedPostsArray.length); 
+//    console.log(likedPostsArray.includes(id));
+
+// }
+
+const addToLike=(event,id)=>{
+
+  console.log("The add to like id type is",typeof id);
+
+  likedPostsArray.push(id)
+
+  const tag = event.target;
+
+  tag.setAttribute("class","fa-solid fa-heart text-danger")
+
+} 
+
+
+const reportImage =(id) =>{
+
+     reportedPost.push(id)
+
+     const remainingPicture =container.filter(element=>{
+
+             if (!reportedPost.includes(element.id.toString())) {
+
+              return element;
+   
+             }
+            
+
+     })
+
+     displayPicture(remainingPicture)
+
+
+}
+
+
+
+
+
+
+  
+
+
+
+
